@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.3.1/css/bootstrap.min.css" />
+
+<head>
+    <meta charset="utf-8">
+    <title>Liste des Telephone</title>
+</head>
+
+<body>
+<div th:replace="template"></div>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            Liste des Telpehones
+        </div>
+        <div class="card-body">
+
+            <table class="table table-striped">
+                <tr>
+                    <th>ID</th>
+                    <th>Nom Telephone</th>
+                    <th>prix telephone</th>
+                    <th>date creation</th>
+
+                </tr>
+                <tr th:each="p:${tels.content}">
+                    <td th:text="${p.idtel}"></td>
+                    <td th:text="${p.nomTel}"></td>
+                    <td th:text="${p.prixTel}"></td>
+                    <td th:text="${p.dateCreation}"></td>
+
+                    <td><a onclick="return confirm('vous etes sur de supprimer ce telephone ?')"
+                           class="btn btn-danger" th:href="@{supprimerTel(id=${p.idtel},
+ page=${currentPage},size=${size})}">Supprimer</a></td>
+
+                </tr>
+            </table>
+            <ul class="nav nav-pills">
+                <li th:each="page,status:${pages}">
+                    <a th:class="${status.index==currentPage?'btn btn-primary':'btn' }"
+                       th:href="@{ listeTelephones(page=${status.index}, size=${size} ) }"
+                       th:text="${status.index }"></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
