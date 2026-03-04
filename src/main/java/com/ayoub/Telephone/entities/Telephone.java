@@ -2,10 +2,8 @@ package com.ayoub.Telephone.entities;
 
 import java.util.Date;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
 @Entity
 public class Telephone {
 	@Id
@@ -14,6 +12,8 @@ public class Telephone {
 	private String nomTel ;
 	private Double prixTel ;
 	private Date dateCreation ;
+    @ManyToOne
+    private Statut statut;
   
 	public Telephone() {
 		super();
@@ -28,6 +28,14 @@ public class Telephone {
 		this.dateCreation = dateCreation;
 
 	}
+
+    public Statut getStatut() {
+        return statut;
+    }
+
+    public void setStatut(Statut statut) {
+        this.statut = statut;
+    }
 
     public Long getIdtel() {
         return idtel;

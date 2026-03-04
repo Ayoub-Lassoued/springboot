@@ -3,11 +3,13 @@ package com.ayoub.Telephone;
 import java.util.Date;
 import java.util.List;
 
+import com.ayoub.Telephone.repos.TelephoneRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 
+import com.ayoub.Telephone.entities.Statut;
 import com.ayoub.Telephone.entities.Telephone;
 import com.ayoub.Telephone.service.TelephoneService;
 
@@ -15,7 +17,9 @@ import com.ayoub.Telephone.service.TelephoneService;
 class MobileApplicationTests {
 
 	 @Autowired
-	    private TelephoneService telService;
+	 private TelephoneService telService;
+	 @Autowired
+     private TelephoneRepository telephoneRepository;
 
 	    @Test
 	    public void testSaveTel() {
@@ -80,4 +84,81 @@ class MobileApplicationTests {
 	            System.out.println(t.toString());
 	        });
 
-	    }}
+	    }
+	    
+	@Test
+    public void testFindByNomTelephone()
+    {
+        List<Telephone> tels = telephoneRepository.findByNomTel("iPhone 12");
+        for (Telephone  t: tels)
+        {
+            System.out.println(t);
+        }
+    }
+
+    @Test
+    public void testFindByNomTelephoneContains ()
+    {
+        List<Telephone> prods=telephoneRepository.findByNomTelContains("iphone");
+        for (Telephone t : prods)
+        {
+            System.out.println(t);
+        } }
+    @Test
+    public void testfindByNomPrix()
+    {
+    List<Telephone> prods = telephoneRepository.findByNomPrix("iphone X", 1000.0);
+    for (Telephone p : prods)
+    {
+    System.out.println(p);
+    }
+    }
+    @Test
+    public void testTrierTelephonesNomsPrix()
+    {
+        List<Telephone> prods = telephoneRepository.trierTelephonesNomsPrix();
+        for (Telephone p : prods)
+        {
+            System.out.println(p);
+        }
+    }
+    @Test
+    public void findByStatutIdSat()
+    {
+        List<Telephone> prods = telephoneRepository.findByStatutIdSat(1L);
+        for (Telephone p : prods)
+        {
+            System.out.println(p);
+        }
+    }
+    @Test
+    public void testfindByCategorie()
+    {
+    Statut sat = new Statut();
+    sat.setIdSat(1L);
+    List<Telephone> prods = telephoneRepository.findByStatut(sat);
+    for (Telephone p : prods)
+    {
+    System.out.println(p);
+    }
+    }
+    @Test
+    public void testfindByOrderByNomTelephoneAsc()
+    {
+        List<Telephone> prods =
+                telephoneRepository.findByOrderByNomTelAsc();
+        for (Telephone p : prods)
+        {
+            System.out.println(p);
+        }
+    }
+
+
+
+
+
+
+
+
+
+}

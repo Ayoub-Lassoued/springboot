@@ -2,6 +2,7 @@ package com.ayoub.Telephone.service;
 
 import java.util.List;
 
+import com.ayoub.Telephone.entities.Statut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -53,8 +54,40 @@ public class TelephoneServiceImpl implements TelephoneService  {
 	        return telRepository.findAll(PageRequest.of(page, size));
 	    }
 
-	   
-	   
-	
+    @Override
+    public List<Telephone> findByNomTelephone(String nomTel) {
+        return telRepository.findByNomTel(nomTel);
+    }
+
+    @Override
+    public List<Telephone> findByNomTelephonesContains(String nomTel) {
+        return telRepository.findByNomTelContains(nomTel);
+    }
+
+    @Override
+    public List<Telephone> findByNomPrix(String nom, Double prix) {
+        return telRepository.findByNomPrix(nom, prix);
+    }
+
+    @Override
+    public List<Telephone> findByStatut(Statut statut) {
+        return telRepository.findByStatut(statut);
+    }
+
+    @Override
+    public List<Telephone> findByStatutIdSat(Long id) {
+        return telRepository.findByStatutIdSat(id);
+    }
+
+    @Override
+    public List<Telephone> findByOrderByNomTelephoneAsc() {
+        return telRepository.findByOrderByNomTelAsc();
+    }
+
+    @Override
+    public List<Telephone> trierTelephonesNomsPrix() {
+        return telRepository.findByOrderByNomTelAsc();
+    }
+
 
 }
