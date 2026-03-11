@@ -3,15 +3,31 @@ package com.ayoub.Telephone.entities;
 import java.util.Date;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
+
 
 @Entity
 public class Telephone {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idtel ;
+    @Setter
+    @NotNull
+    @Size (min = 4,max = 15)
 	private String nomTel ;
-	private Double prixTel ;
-	private Date dateCreation ;
+    @Setter
+    @Min(value = 10)
+    @Max(value = 10000)
+    private Double prixTel ;
+    @Setter
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @PastOrPresent
+    private Date dateCreation ;
+    @Setter
+
     @ManyToOne
     private Statut statut;
   
@@ -19,22 +35,18 @@ public class Telephone {
 		super();
 
 	}
-	public Telephone( String nomTel, String desTel, Double prixTel, Date dateCreation, String emailtel) {
+	public Telephone( String nomTel, Double prixTel, Date dateCreation) {
 		super();
 		
 		this.nomTel = nomTel;
 
 		this.prixTel = prixTel;
-		this.dateCreation = dateCreation;
+
 
 	}
 
     public Statut getStatut() {
         return statut;
-    }
-
-    public void setStatut(Statut statut) {
-        this.statut = statut;
     }
 
     public Long getIdtel() {
@@ -49,27 +61,14 @@ public class Telephone {
         return nomTel;
     }
 
-    public void setNomTel(String nomTel) {
-        this.nomTel = nomTel;
-    }
-
     public Double getPrixTel() {
         return prixTel;
-    }
-
-    public void setPrixTel(Double prixTel) {
-        this.prixTel = prixTel;
     }
 
     public Date getDateCreation() {
         return dateCreation;
     }
 
-    public void setDateCreation(Date dateCreation) {
-        this.dateCreation = dateCreation;
-    }
-
-  
 
     @Override
 	public String toString() {

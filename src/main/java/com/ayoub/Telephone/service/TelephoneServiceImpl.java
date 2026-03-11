@@ -3,6 +3,7 @@ package com.ayoub.Telephone.service;
 import java.util.List;
 
 import com.ayoub.Telephone.entities.Statut;
+import com.ayoub.Telephone.repos.StatutRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,7 +18,10 @@ import com.ayoub.Telephone.repos.TelephoneRepository;
 @Service
 public class TelephoneServiceImpl implements TelephoneService  {
 	  @Autowired
+      private StatutRepository statutRepository;
+    @Autowired
 	    private TelephoneRepository telRepository;
+
 
 	    @Override
 	    public Telephone saveTel(Telephone t) {
@@ -87,6 +91,13 @@ public class TelephoneServiceImpl implements TelephoneService  {
     @Override
     public List<Telephone> trierTelephonesNomsPrix() {
         return telRepository.findByOrderByNomTelAsc();
+    }
+    @Override
+    public List<Statut> getAllStatuts() {
+        return statutRepository.findAll();
+    }
+    public Statut getStatutById(Long id) {
+        return statutRepository.findById(id).orElse(null);
     }
 
 

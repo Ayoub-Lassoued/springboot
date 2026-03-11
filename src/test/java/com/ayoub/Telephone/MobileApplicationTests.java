@@ -25,10 +25,10 @@ class MobileApplicationTests {
 	    public void testSaveTel() {
 	        Telephone tel = new Telephone(
 	                "iPhone 12",
-	                "Très bon téléphone",
+
 	                2200.0,
-	                new Date(),
-	                "apple@gmail.com"
+	                new Date()
+
 	        );
 
 	        Telephone savedTel = telService.saveTel(tel);
@@ -89,7 +89,7 @@ class MobileApplicationTests {
 	@Test
     public void testFindByNomTelephone()
     {
-        List<Telephone> tels = telephoneRepository.findByNomTel("iPhone 12");
+        List<Telephone> tels = telephoneRepository.findByNomTel("samsung a51");
         for (Telephone  t: tels)
         {
             System.out.println(t);
@@ -99,7 +99,7 @@ class MobileApplicationTests {
     @Test
     public void testFindByNomTelephoneContains ()
     {
-        List<Telephone> prods=telephoneRepository.findByNomTelContains("iphone");
+        List<Telephone> prods=telephoneRepository.findByNomTelContains("o");
         for (Telephone t : prods)
         {
             System.out.println(t);
@@ -107,7 +107,7 @@ class MobileApplicationTests {
     @Test
     public void testfindByNomPrix()
     {
-    List<Telephone> prods = telephoneRepository.findByNomPrix("iphone X", 1000.0);
+    List<Telephone> prods = telephoneRepository.findByNomPrix("oppo reno 6", 1800.0);
     for (Telephone p : prods)
     {
     System.out.println(p);
@@ -132,7 +132,7 @@ class MobileApplicationTests {
         }
     }
     @Test
-    public void testfindByCategorie()
+    public void testfindByStatut()
     {
     Statut sat = new Statut();
     sat.setIdSat(1L);
