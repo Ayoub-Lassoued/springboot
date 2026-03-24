@@ -1,19 +1,23 @@
 package com.ayoub.Telephone.service;
 
+import com.ayoub.Telephone.dto.TelephoneDTO;
 import com.ayoub.Telephone.entities.Statut;
 import com.ayoub.Telephone.entities.Telephone;
+
+
+
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface TelephoneService {
 
-    Telephone saveTel(Telephone t);
-    Telephone updateTel(Telephone t);
+    TelephoneDTO saveTel(TelephoneDTO t);
+    TelephoneDTO updateTel(TelephoneDTO t);
     void deleteTel(Telephone t);
     void deleteTelById(Long id);
-    Telephone getTel(Long id);
-    List<Telephone> getAllTels();
+    TelephoneDTO getTel(Long id);
+    List<TelephoneDTO> getAllTels();
     Page<Telephone> getAllTelsParPage(int page, int size);
 
     List<Telephone> findByNomTelephone(String nomTel);
@@ -25,5 +29,9 @@ public interface TelephoneService {
     List<Telephone> trierTelephonesNomsPrix();
     Statut getStatutById(Long id);
     List<Statut> getAllStatuts();
-    // ✅ ne pas oublier
+    TelephoneDTO convertEntityToDto (Telephone telephone);
+    Telephone convertDtoToEntity(TelephoneDTO telephoneDTO);
+
+
+
 }

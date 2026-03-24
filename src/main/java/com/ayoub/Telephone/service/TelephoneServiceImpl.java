@@ -1,63 +1,84 @@
 package com.ayoub.Telephone.service;
 
-import java.util.List;
-
+import com.ayoub.Telephone.dto.TelephoneDTO;
 import com.ayoub.Telephone.entities.Statut;
+import com.ayoub.Telephone.entities.Telephone;
 import com.ayoub.Telephone.repos.StatutRepository;
+import com.ayoub.Telephone.repos.TelephoneRepository;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.ayoub.Telephone.entities.Telephone;
-import com.ayoub.Telephone.repos.TelephoneRepository;
-
-
-
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-public class TelephoneServiceImpl implements TelephoneService  {
-	  @Autowired
-      private StatutRepository statutRepository;
+@Transactional
+public class TelephoneServiceImpl implements TelephoneService {
     @Autowired
-	    private TelephoneRepository telRepository;
+    ModelMapper modelMapper;
+    @Autowired
+    private TelephoneRepository telRepository;
 
+    @Autowired
+    private StatutRepository statutRepository;
 
-	    @Override
-	    public Telephone saveTel(Telephone t) {
-	        return telRepository.save(t);
-	    }
+    // ✅ SAVE
+    @Override
+    public TelephoneDTO saveTel(TelephoneDTO t) {
+        Telephone tel = convertDtoToEntity(t);
+        Telephone savedTel = telRepository.save(tel);
+        return convertEntityToDto(savedTel);
+    }
 
-	    @Override
-	    public Telephone updateTel(Telephone t) {
-	        return telRepository.save(t);
-	    }
+    // ✅ UPDATE
+    @Override
+    public TelephoneDTO updateTel(TelephoneDTO t) {
+        Telephone tel = convertDtoToEntity(t);
+        Telephone updatedTel = telRepository.save(tel);
+        return convertEntityToDto(updatedTel);
+    }
 
-	    @Override
-	    public void deleteTel(Telephone t) {
-	        telRepository.delete(t);
-	    }
+    // ✅ DELETE BY ENTITY
+    @Override
+    public void deleteTel(Telephone t) {
+        telRepository.delete(t);
+    }
 
-	    @Override
-	    public void deleteTelById(Long id) {
-	        telRepository.deleteById(id);
-	    }
+    // ✅ DELETE BY ID
+    @Override
+    public void deleteTelById(Long id) {
+        telRepository.deleteById(id);
+    }
 
-	    @Override
-	    public Telephone getTel(Long id) {
-	        return telRepository.findById(id).orElse(null);
-	    }
+    // ✅ GET BY ID
+    @Override
+    public TelephoneDTO getTel(Long id) {
+        return telRepository.findById(id)
+                .map(this::convertEntityToDto)
+                .orElse(null);
+    }
 
-	    @Override
-	    public List<Telephone> getAllTels() {
-	        return telRepository.findAll();
-	    }
+    // ✅ GET ALL
+    @Override
+    public List<TelephoneDTO> getAllTels() {
+        return telRepository.findAll()
+                .stream()
+                .map(this::convertEntityToDto)
+                .collect(Collectors.toList());
+    }
 
-	    @Override
-	    public Page<Telephone> getAllTelsParPage(int page, int size) {
-	        return telRepository.findAll(PageRequest.of(page, size));
-	    }
+    // ✅ GET ALL WITH PAGINATION
+    @Override
+    public Page<Telephone> getAllTelsParPage(int page, int size) {
+        return telRepository.findAll(PageRequest.of(page, size));
+    }
 
+    // ✅ SEARCH BY NAME
     @Override
     public List<Telephone> findByNomTelephone(String nomTel) {
         return telRepository.findByNomTel(nomTel);
@@ -92,13 +113,31 @@ public class TelephoneServiceImpl implements TelephoneService  {
     public List<Telephone> trierTelephonesNomsPrix() {
         return telRepository.findByOrderByNomTelAsc();
     }
+
+    // ✅ STATUT
     @Override
-    public List<Statut> getAllStatuts() {
-        return statutRepository.findAll();
-    }
     public Statut getStatutById(Long id) {
         return statutRepository.findById(id).orElse(null);
     }
 
+    @Override
+    public List<Statut> getAllStatuts() {
+        return statutRepository.findAll();
+    }
 
-}
+    // ✅ CONVERT ENTITY → DTO
+    // ✅ CONVERT ENTITY → DTO
+    @Override
+    public TelephoneDTO convertEntityToDto(Telephone telephone) {
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+        TelephoneDTO telephoneDTO = modelMapper.map(telephone, TelephoneDTO.class);
+        return telephoneDTO; // ✅ كان produitDTO خطأ
+    }
+
+    // ✅ CONVERT DTO → ENTITY
+    @Override
+    public Telephone convertDtoToEntity(TelephoneDTO telephoneDTO) {
+        Telephone telephone = new Telephone();
+        telephone = modelMapper.map(telephoneDTO, Telephone.class); // ✅ كان TelephoneDTO.class خطأ
+        return telephone;
+    }}

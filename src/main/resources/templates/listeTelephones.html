@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="utf-8">
     <title>Liste des Telephones</title>
-    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}" />
 </head>
 <body>
 <div th:replace="~{template}"></div>
@@ -18,7 +18,7 @@
                     <th>Prix Telephone</th>
                     <th>Date Creation</th>
                     <th>Statut</th>
-                    <th>Actions</th>
+                    <th sec:authorize="hasAuthority('ADMIN')">Actions</th>
                 </tr>
                 <tr th:each="p:${tels.content}">
                     <td th:text="${p.idtel}"></td>
@@ -28,12 +28,14 @@
                     <td th:if="${p.statut != null}" th:text="${p.statut.nomSat}"></td>
                     <td th:if="${p.statut == null}">Pas de Statut</td>
                     <td>
-                        <a onclick="return confirm('vous etes sur de supprimer ce telephone ?')"
+                        <a sec:authorize="hasAuthority('ADMIN')"
                            class="btn btn-danger"
+                           onclick="return confirm('Etes-vous sûr ?')"
                            th:href="@{supprimerTel(id=${p.idtel},page=${currentPage},size=${size})}">
                             Supprimer
                         </a>
-                        <a class="btn btn-success"
+                        <a sec:authorize="hasAuthority('ADMIN')"
+                           class="btn btn-success"
                            th:href="@{modifierTel(id=${p.idtel},page=${currentPage},size=${size})}">
                             Editer
                         </a>
